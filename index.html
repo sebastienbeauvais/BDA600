@@ -35,9 +35,9 @@
 								<li><a href="#work">Data Preparation</a></li>
 								<li><a href="#modeling">Modeling</a></li>
 								<li><a href="#results">Results</a></li>
-								<li><a href="#discussion">Discussion and Conclusion</a></li>
+								<li><a href="#discussion">Discussion + Conclusion</a></li>
 								<li><a href="#about_us">About Us</a></li>
-								<li><a href="#contact">Contact</a></li>
+								<!-- <li><a href="#contact">Contact</a></li> -->
 								<li><a href="#references">References</a></li> 
 								<!-- <li><a href="#elements">Elements</a></li> -->
 							</ul>
@@ -255,6 +255,12 @@
 											F1 score - The F1 score is a metric that is a combination of Precision and Recall, and is treated as a compromise between the two metrics.
 										</li>
 									</ul>
+									Using BERT (Bidirectional Encoder Representations from Transformers), a natural language processing model that is previously trained on billions 
+									of words. BERT uses unsupervised learning to classify text based on a provided layer. In this case, Tripadvisor review sentiment 
+									is being provided as the additional layer to classify.<br><br>
+									It is important to note that some categories that we identified during our tagging will not be present in our analyses. These 
+									categories will be No Robot Mentions and General. We decided on this because there is little to no insight to be gained 
+									on specific roles that robots are fulfilling at hotels from reviews tagged under these categories.<br><br>
 								</p>
 							</article>
 						
@@ -263,7 +269,21 @@
 								<h2 class="major">Results</h2>
 								<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
 								<p>
-									<!--ADD SECTION ONCE COMPLETED-->
+									<h3>Count Vectorizer & TF-IDF Results</h3>
+										Overall, Linear SVC outperformed all other models, with a total score of roughly 90%. Random Forests, Neural Networks, 
+										and Decision trees performed better using count vectorizer than TF-IDF, but still fell a bit short of Linear SVC&#39;s 
+										performance using TF-IDF vectorizer. We deemed the differences in performance between TF-IDF and Count Vectorizer across 
+										all models to not be statistically significant based on our research findings.<br><br>
+										It is noteworthy that due to the sheer lack of “cleaning” tags that we found during our tagging process that any 
+										analysis done using it is likely not relevant. Only 26 reviews were tagged as cleaning and thus model results 
+										and other analytic methods should not be considered statistically significant.<br><br>
+										<center><img src="images/avg_model_perf(TF-IDF).JPG" style="width:700px"></center><br>
+										<center><img src="images/avg_model_perf(countVec).JPG" style="width:700px"></center><br>
+										<center><img src="images/check-in_ac(TF-IDF).JPG" style="width:700px"></center><br>
+										<center><img src="images/sent_precision_score.JPG" style="width:700px"></center><br>
+										<center><img src="images/delivery_rs_f1_score(TF-IDF).JPG" style="width:700px"></center><br>
+										<center><img src="images/cleaning_recall(TF-IDF).JPG" style="width:700px"></center><br>
+									<h3>BERT Results</h3>
 								</p>
 								
 							</article>
