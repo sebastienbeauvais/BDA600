@@ -1,0 +1,773 @@
+<!DOCTYPE HTML>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Dimension by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="logo">
+							<span class="icon fa-chart-bar"></span>
+						</div>
+						<div class="content">
+							<div class="inner">
+								<h1>Robo-Service</h1>
+								<p>An analysis on service robots in the <br>
+									hopsitality and healthcare industry</p>
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#intro">Problem Statement</a></li>
+								<li><a href="#work">Data Preparation</a></li>
+								<li><a href="#modeling">Modeling</a></li>
+								<li><a href="#results">Results</a></li>
+								<li><a href="#discussion">Discussion and Conclusion</a></li>
+								<li><a href="#about_us">About Us</a></li>
+								<li><a href="#contact">Contact</a></li>
+								<li><a href="#references">References</a></li> 
+								<li><a href="#elements">Elements</a></li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Intro -->
+							<article id="intro">
+								<h2 class="major">Problem Statement</h2>
+								<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
+								<p>For our capstone project, our group chose to help Dr. Goldberg with his current research regarding robot 
+									hotel services. The dataset currently contains 32,829 reviews that were scraped from TripAdvisor on 
+									09/03/2021. We will be using text mining and machine learning on TripAdvisor reviews of robot hotels. 
+									We're interested in understanding how robots are used in hotels (check-in/check-out, room service, 
+									cleaning, etc.) and how people feel about each of those uses (positive or negative). We're hoping to 
+									perform sentiment analysis on the reviews and build a machine learning model to classify unseen reviews. 
+									We're also planning on creating some sort of visualization/dashboard to compare aspects of different 
+									hotels. For example, maybe one hotel has effective check-in robots but awful cleaning robots; maybe a 
+									different hotel has good cleaning robots but mediocre room service robots, etc. This will be done by 
+									separating robot service review topics into two categories, with multiple subcategories underneath. 
+									The two primary service categories will be service quality attributes, and operation area attributes 
+									Service quality will include: humanization design, signature design, service charge, stability, speed, 
+									and technology. Operation area attributes will include: rooms, reception, concierge, luggage, and dining.
+								</p>
+								<p>
+									<h3>Objectives</h3>
+									<ul>
+										<li>Manually tag thousands of reviews based on sentiment and robot service mentions</li>
+										<li>Sentiment analysis to categorize the data</li>
+										<li>Using multiple machine learning models to "DO SOMETHING"</li>
+										<li>Create a website demonstrating the project</li>
+									</ul>
+								</p>
+							</article>
+
+						<!-- Work -->
+							<article id="work">
+								<h2 class="major">The Data</h2>
+								<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
+								<h3>Data</h3>
+								<p>
+									The dataset for this research was collected by Dr. Goldberg using a python-based text mining script on 
+									TripAdvisor reviews. The data was collected from 45 hotels on an international scale. Refer to figure 
+									x.x.x to see the descriptive statistics for the data. With the initial gathering, 32,829 reviews were 
+									collected. However, not all reviews refer to robots. Using keywords provided by Luo et al. to filter 
+									the text of the hotel reviews, Dr. Goldberg was able to narrow down the dataset to a total of 3,955 
+									reviews. Once the raw dataset was complete, it was our job to manually tag the reviews using the PAMTAG 
+									system that Dr. Goldberg helped build during his PhD at Virginia Tech. This site randomly assigns the 
+									reviews to each account and it's a central place to store and reconcile the results. PAMTAG made the 
+									tagging process streamline but tedious. For each review we were presented the review itself, the type 
+									of service provided, and the sentiment the review gave towards the robot service (if any).
+								</p>
+								<h3>Robot Hotel Descriptive Statistics</h3>
+								<table>
+									<tr>
+									  <th>Country</th>
+									  <th>Number of Hotels</th>
+									  <th>Review Count</th>
+									  <th>Review Count Mentioning Robots</th>
+									</tr>
+									<tr>
+									  <td>United States</td>
+									  <td>23</td>
+									  <td>22176</td>
+									  <td>2262</td>
+									</tr>
+									<tr>
+									  <td>Singapore</td>
+									  <td>5</td>
+									  <td>8666</td>
+									  <td>1445</td>
+									</tr>
+									<tr>
+									  <td>China</td>
+									  <td>4</td>
+									  <td>1092</td>
+									  <td>27</td>
+									</tr>
+									<tr>
+									  <td>Canada</td>
+									  <td>1</td>
+									  <td>496</td>
+									  <td>128</td>
+									</tr>
+									<tr>
+									  <td>Japan</td>
+									  <td>10</td>
+									  <td>374</td>
+									  <td>84</td>
+									</tr>
+									<tr>
+									  <td>South Africa</td>
+									  <td>1</td>
+									  <td>13</td>
+									  <td>7</td>
+									</tr>
+									<tr>
+									  <td>Portugal</td>
+									  <td>1</td>
+									  <td>12</td>
+									  <td>2</td>
+									</tr>
+								  </table>
+								<h3>Cleaning/Preparing</h3>
+								<p>
+									Due to the random nature of assignment some reviews had more than one person tag them. This posed a 
+									small problem for us as we had to ensure that everyone tagged reasonably consistently across the 
+									thousands of reviews. Here we care about reliability for two things: robot mention(s) (how the robot 
+									was used) and sentiment (positive/negative/no robot mentions). It&#39;s possible that one of the tags was 
+									more reliable than the other, and if so, we should be aware of it.<br><br>
+									Due to how the robot mention(s) field was handled during the tagging process it is possible for a single 
+									review to have multiple tags as it was a "select all that apply" situation. For example, it was possible 
+									to see a tag of [Check-in/check-out, General]. To clean the data for modeling we had to break these tags 
+									into multiple columns. The process was each column is a binary yes/no for check-in/check-out, another 
+									column is a binary yes/no for general or not; etc. Having each tag properly split we began measuring 
+									reliability. The first method was using simple Accuracy Percentage. This is the most straightforward: 
+									out of all the overlapping cases, how many did we agree on? For example, if there were 100 overlapping 
+									cases, and we agreed 90 times, then the accuracy percentage is 90%. The second method was using Cohen&#39;s 
+									Kappa. This is a comparison of our agreement percentage to random chance. The scale is from -1 to 1. 0 
+									is the level of agreement we'd expect from random chance. 1 means complete agreement all the time. 0.5 is 
+									somewhere in between. -0.5 means we are worse than random chance.<br><br>
+									<center><img src="images/AccuracyScoreKohens.PNG" style="width:700px"></center><br>
+									Once we calculated out initial Accuracy percentages and Cohen&#39;s Kappa, we found that the results for “room 
+									service” and “delivery” were quite poor. Dr. Goldbergs hypothesis was that the differentiation between the 
+									two was slim. We combined these two categories which drastically increased Cohen&#39;s Kappa.<br><br>
+									The final step was to consolidate all the newly formatted and cleaned data into something we could use for 
+									training machine learning models. Being that some reviews had multiple taggings, we had to decide what to 
+									do if the taggings did not agree. I.e. if one person tagged “check-in/check-out” and the other person did 
+									not, what do we do? Dr. Goldbergs suggestion was as follows:
+									<ul>
+										<li>
+											If there is an odd number of tags (if one person tagged the review or three people tagged the review), 
+											then we can go with the majority decision.
+										</li>
+										<li>
+											If there is an even number of tags, choose the negative (0) class by default. That is, if one person 
+											said “check-in/check-out” (1) and the other person said “no check-in/check-out” (0) then go with “no 
+											check-in/check-out” (0). This ensures that anything that is kept as a 1 is unambiguously a 1.
+										</li>
+									</ul>
+								</p>
+								<h3>Exploratory Data Analysis</h3>
+								<p>
+									<h4>Intro</h4>
+									Exploratory analysis is the process of discovering patterns that occur in our dataset to find any characteristics 
+									that can be clearly demonstrated through visuals. During our exploration we created a word cloud between positive 
+									and negative sentiment, distribution plots, and box plots to further visualize trends. A word cloud is a corpus 
+									(bag of words) that visually represents text data which depicts keywords. The words appearing in the cloud vary 
+									in importance based on text size and color based on the frequency they appear in the corpus. A distribution plot 
+									is a visual representation of the population being sampled. There are several kinds of patterns a plot can follow, 
+									however the most common are normal distributions and skewed distributions. A box and whiskers plot is a visual 
+									representation of locality, skewness, and spread of data. <br><br>
+									<h4>Word Clouds</h4>
+									<center><img src="images/pos_wordcloud.png" style="width:700px"></center><br>
+									The positive sentiment word cloud quickly demonstrates what words frequently occurre in reviews 
+									where the tag was negative. Words with higher frequencies are “bed”, “check”, “staff”, and “service”. To create this visual, we split the loaded 
+									dataset into a pandas dataframe then split it into another dataframe filtering on sentiment.<br><br>
+									<center><img src="images/neg_wordlcoud.png" style="width:700px"></center><br>
+									The negative sentiment word cloud quickly demonstrates what words frequently occurre in reviews 
+									where the tag was negative. Words with higher frequencies are “bed”, “check”, “staff”, and “service”. To create this visual, we split the loaded 
+									dataset into a pandas dataframe then split it into another dataframe filtering on sentiment. Here we also see some overlap between the positive 
+									sentiment wordcloud as these are general keywords that appear in most hotel reviews.<br><br>
+									<h4>Plots</h4>
+									<center><img src="images/sentiment_polarity_distribution.png" style="width:700px"></center><br>
+									The plot of sentiment polarity demonstrates a normal distribution with the majority of reviews have a positive sentiment. A sentiment polarity 
+									distribution measures between -1 and 1 (-1 being absolutely negative, 0 being completely neutral, and 1 being absolutely positive). 
+									We know that the majority of reviews are positive the x-axis has a leftward shift resulting in the median being somewhere around 0.3.<br><br>
+									<center><img src="images/wordcount.png" style="width:700px"></center><br>
+									The plot on review word counts quickly shows us that most reviews are less than 2000 words.<br><br>
+									<center><img src="images/top20words_w_sw.png" style="width:700px"></center><br>
+									The plot above shows us what the 20 most frequent words occurring in reviews are. From this we can also compare the word clouds and see That
+									many of the larger words from both clouds appear in this plot. For this plot we have also removed stop words similar to the word cloud.<br><br>
+									<center><img src="images/top20bigrams_w_sw.png" style="width:700px"></center><br>
+									The plot above shows us what the 20 most frequent bigrams occurring in reviews. A bigram is a pair of consecutive words. We can compare this 
+									plot to the top 20 words plot and see that many of the stand alone words also appear in the bigrams.<br><br>
+									<center><img src="images/top20trigrams_w_sw.png" style="width:700px"></center><br>
+									The plot above shows us what the 20 most frequent trigrams occurring in reviews. A trigram is similar to a bigram but is three consecutive words.
+									Here we see that a similar pattern is followed as the bigram in that many of the bigrams appear in the trigrams.<br><br>
+									<center><img src="images/sentiment_polarity_box_plots.png" style="width:700px"></center><br>
+									The box plot on sentiment polarity by robot service mentions gives us a quick overview of general statistics per category. Here we can quickly 
+									understand where the mean of each category lies as well as the spread and the skewness. We see that the "general" category has the most outlier
+									points with and the largest spread, while the cleaning category has the thighest spread and no outliers.<br><br>
+								</p>
+							</article>
+
+						<!-- About -->
+							<article id="modeling">
+								<h2 class="major">Modeling</h2>
+								<span class="image main"><img src="images/pic03.jpg" alt="" /></span>
+								<h3>Modeling Overview</h3>
+								<p>
+									For our machine learning models, we chose to use a variety of classification algorithms as well as vectorizers. 
+									For machine learning models, we chose to use five different ones for our analysis: Random Forests, Neural Networks, 
+									Linear Support Vector Machine (SVC), Decision Trees, and K-Nearest Neighbors. For vectorizers we chose count vectorizer 
+									and TF-IDF vectorizer to determine whether the vectorizer used provided any significant changes in our results.<br><br>
+									We will be scoring the machine learning models based on the algorithm&#39;s performance on determining the four service 
+									categories that we identified via tagging. The four different service categories we focused on were Check-In, Sentiment, 
+									Delivery + Room Service, and Cleaning. The four metrics that will be used to rank the machine learning algorithms are 
+									accuracy, precision, recall, and F1 score. Our results will be an average across a set of five-fold cross validation. 
+									Below is a breakdown of the four metrics:<br>
+									<ul>
+										<li>
+											Accuracy - The accuracy metric is a measure of how many times the model categorized the text of the review correctly.
+										</li>
+										<li>
+											Precision - The precision metric will measure how many times the model claimed the text was of a specific category, and it was correct.
+										</li>
+										<li>
+											Recall - The recall metric will measure out of all the times it labeled a review, how many were correctly labeled.
+										</li>
+										<li>
+											F1 score - The F1 score is a metric that is a combination of Precision and Recall, and is treated as a compromise between the two metrics.
+										</li>
+									</ul>
+								</p>
+							</article>
+						
+						<!-- Results -->
+							<article id="results">
+								<h2 class="major">Results</h2>
+								<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
+								<p>
+									<!--ADD SECTION ONCE COMPLETED-->
+								</p>
+								
+							</article>
+
+						<!-- Discussion and Conlclusion-->
+							<article id="discussion">
+								<h2 class="major">Discussion and Conlclusion</h2>
+								<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
+								<p>
+									<h3>Future Impact</h3>
+									The impact of service robots in daily life could be life changing for any individuals and companies alike. By adopting 
+									robotic workers, companies could not only save expenses, but workers could refocus their daily tasks to complete 
+									more technical duties while the robotic workers do more repetitive tasks. Although the initial cost of many 
+									service robots may be more than their human counterparts (in terms of salary paid), the long term benefit for 
+									companies would be a drastic decrease in spending (once the robot is paid off). It&#39;s difficult to say exactly 
+									how groundbreaking service robots can become in the near future, but with advancements in AI technology as 
+									well as general robotic technology the industry is advancing at a very rapid pace. In the next few years we 
+									may see more robots working as a concierge service, tour guide, storage worker, and other simpler jobs.<br><br>
+									
+									<h3>SWOT Analysis</h3>
+									When looking at the robot service industry, we can use a Strengths, Weaknesses, Opportunities, and Threats (SWOT) 
+									analysis to quickly identify and understand the business environment to achieve future goals. Strength and Weaknesses 
+									are the internal factors (something that can directly affect the company or industry such as manufacturing, employees, 
+									and quality), while Opportunities and Threats are external factors (something that is out of the companies control such 
+									as the market, economy, etc.). <br><br>
+									Analyzing strengths in the robotic service industry, realize that by placing robot service providers at specific locations 
+									it allows the human service providers to focus on more technical tasks (Dautenhahn et al., 2006). This can lead to a business 
+									(hotel, health care, etc.)  to refocus its tasks thus resulting in guests to further enjoy their stay. By implementing robotic 
+									service providers it allows a business to distinguish itself from the competition as robotic service is still a relatively rare 
+									occurrence, but in the long term may minimize expenditures (Luo et al., 2021).<br><br>
+									However, an overwhelming weakness is that consumers may also oppose using robots for delivering human services for reasons like 
+									lacking human touch, and ethical concerns with the potential growth of unemployment rate when robots enter the labor market 
+									(Lu Lu et al., 2019). People are scared of being replaced by robots. This not only may cause controversy or disgruntlement 
+									amongst employees who work alongside a robot, but also can affect the customer views on a business (Liu and Mattila, 2018). 
+									In addition to these concerns, the robotic service may be devalued when human intervention is constantly required to reboot 
+									or recover malfunctioning robots (Gale and Mochizuki, 2019).<br><br>
+									Having the adoption of robotic services also creates lots of interesting opportunities for a business to thrive upon (Hollander, 2023). 
+									The robotic service market in the hotel industry alone is expected to grow from $79 million in 2020 to $338 million by 2025 
+									(Allen, 2023).  By using robotic service providers it introduces the opportunity for businesses to save the financial cost of 
+									utilizing a human employee (Gale and Mochizuki, 2019). In addition to the savings on human labor, there are potential massive 
+									economies of scale in the cost of robots being implemented. The majority of the cost incurred is in the development of the 
+									robots (Wirtz et al., 2021), a chatbot or virtual agent can be scaled close to zero incremental cost (Wirtz et al, 2021).<br><br>
+									The adoption of robotic services also poses some threats to any company. In the off chance that a manufacturer goes under, the business 
+									who purchased a product from the manufacturer will no longer receive support. Another threat comes from the prejudices and 
+									anxieties customer-facing robots possess (Wirtz et al, 2021). They could create unease with customers resulting in poor 
+									reviews ultimately negatively affecting the business. There is also the implication robots do not perceive emotion to the 
+									same capacity as human service providers. Due to this, a robot may offer an awkward or out-of-place response to a 
+									disgruntled customer. There is also the fact that robotic services are a long term investment. It is expensive to 
+									implement and often times businesses will not see their investments recouped in less than 12 months even if implemented 
+									successfully (Wirtz et al, 2021)<br><br>
+									In conclusion, there are many factors to consider when implementing some form of robotic service provider. Some will 
+									be relatively easy to implement such as a chatbot, while others may incur rather large costs with no guarantee of returns. 
+									There is also the ever present concern of customer adoption as well, some people simply do not want to receive service from 
+									robots, yet others think it is fascinating. The industry is growing rapidly which makes being an early adopter both dangerous 
+									and profitable. By implementing robotic services early as a business there is the possibility of distinguishing your brand 
+									amongst competitors as this new feature can create some form of brilliance for customers since few competitors will also provide 
+									such a service.<br><br>
+									<h4>SWOT Table</h4>
+									<table>
+										<tr>
+											<th>Analytical Area</th>
+											<th>Example</th>
+											<th>Library Resource Citation Title</th>
+										</tr>
+										<tr>
+											<td>Strength (Internal)</td>
+											<td>
+												<ul>
+													<li>Allows for human service providers to focus on more technical tasks.</li>
+													<li>Distinguishes brand amongst competitors.</li>
+												</ul>
+											</td>
+											<td>
+												<ul>
+													<li>Developing and validating a service robot integration willingness scale</li>
+													<li>Robots, artificial intelligence, and service automation in hotels</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td>Weakness (Internal)</td>
+											<td>
+												<ul>
+													<li>Increase customer wait times for services provided.</li>
+													<li>High initial cost to implement robotic services</li>
+												</ul>
+											</td>
+											<td>
+												<ul>
+													<li>Consumer evaluation of hotel service robots</li>
+													<li>Robots, artificial intelligence, and service automation in hotels</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td>Opportunity (External)</td>
+											<td>
+												<ul>
+													<li>Save the financial cost of hiring additional human service providers.</li>
+													<li>Early adoption can prove profitable for business.</li>
+												</ul>
+											</td>
+											<td>
+												<ul>
+													<li>How hotels are using robots to reduce costs, improve operations and enhance the guest experience</li>
+													<li>The service revolution, intelligent automation and service robots</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td>Opportunity (External)</td>
+											<td>
+												<ul>
+													<li>No guarantee of adoption across the industry.</li>
+													<li>Implementing robotic service may result in negative reviews ultimately hindering business.</li>
+												</ul>
+											</td>
+											<td>
+												<ul>
+													<li>Understanding customers&#39; hotel revisiting behaviour: a sentiment analysis of online feedback reviews</li>
+													<li>Twitter sentiment analysis: capturing sentiment from integrated resort tweets</li>
+												</ul>
+											</td>
+										</tr>										
+									</table>
+
+								</p>
+								
+							</article>
+
+						<!-- About Us -->
+							<article id="about_us">
+								<h2 class="major">About Us</h2>
+								<span class="image main"><img src="images/sdsu_logo_2.jpg" alt="" /></span>
+								<p>
+									<!-- Jake Kyle-->
+									<h3>Jake Kyle <a href="https://www.linkedin.com/in/jacob-kyle-84579b194/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></h3>
+									<img src="images/jake_headshot.jpg" style="width:200px;height:200px;float:left;padding:10px">
+									Jake Kyle is a master&#39;s student at San Diego State University pursuing a M.S. in Big Data Analytics. He also received a Bachelor 
+									of Science in Information Systems from San Diego State University in 2021. During his time at the university, he has 
+									held several positions working closely with faculty members. Currently, Jake works for the SDSU AI Lab as a Research 
+									Assistant. The SDSU AI lab engages in a wide range of theoretical and experimental research including: Artificial 
+									Intelligence research, teaching, theory, and practice. Jake primarily does research in regards data analytics, text mining, 
+									and machine learning.
+									
+								</p>
+								<p>
+									<!-- Cid Brownell-->
+									<h3 align="right">Cid Brownell <a href="https://www.linkedin.com/in/cid-brownell/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></h3>
+									<img src="images/cid_headshot.jpg" style="width:200px;height:200px;float:right;padding:10px">
+									Cid Brownell is a master&#39;s student at San Diego State University pursuing an M.S. in Big Data Analytics. He received his 
+									Bachelors of Science in economics, environmental science, and statistics at the University of California, Santa Cruz in 
+									2020. Cid is passionate about solving problems using data and models to generate solutions and hopes to use his skills 
+									in analytics to make lasting decisions. Cid&#39;s personal research projects include deep learning, machine learning 
+									engineering, and business analytics.	
+								</p>
+								<p>
+									<!-- Sebastien Beauvais -->
+									<h3>Sebastien Beauvais <a href="https://www.linkedin.com/in/sebastien-beauvais-5a7678167/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></h3>
+									<img src="images/seb_headshot.jpg" style="width:200px;height:200px;float:left;padding:10px">
+									Sebastien Beauvais is a master&#39;s student at San Diego State University pursing an M.S. in Big Data Analytics. He received 
+									his Bachelor of Science in Technology Information Management at the University of California, Santa Cruz in 2020. Currently 
+									Sebastien works as a data engineer for a cloud solutions company.  His interests lie in machine learning engineering, 
+									analytics engineering, and data modeling. 	
+								</p>
+								<p>
+									<!-- Dr Goldberg -->
+									<h3 align="right">Dr. David Goldberg <a href="https://www.linkedin.com/in/goldbergdm/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></h3>
+									<img src="images/goldberg_headshot.jpg" style="width:200px;height:200px;float:right;padding:10px">
+									Dr. David Goldberg is an associate professor of Management Information Systems at San Diego State University. He received 
+									his doctoral and bachelor&#39;s degrees from Virginia Tech. His current research interests are in the areas of text mining, 
+									machine learning, decision support systems, and expert systems. Dr. Goldberg&#39;s recent research has applied text mining to 
+									product quality and safety, using online reviews to identify and flag unsafe or defective products. His recent publications 
+									have appeared in Decision Support Systems, Decision Sciences, Communications of the Association for Information Systems, 
+									Information Technology & Management, Safety Science, and others.	
+								</p>
+							
+							</article>
+
+						<!-- Contact -->
+							<article id="contact">
+								<h2 class="major">Contact</h2>
+								<form method="post" action="#">
+									<div class="fields">
+										<div class="field half">
+											<label for="name">Name</label>
+											<input type="text" name="name" id="name" />
+										</div>
+										<div class="field half">
+											<label for="email">Email</label>
+											<input type="text" name="email" id="email" />
+										</div>
+										<div class="field">
+											<label for="message">Message</label>
+											<textarea name="message" id="message" rows="4"></textarea>
+										</div>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Send Message" class="primary" /></li>
+										<li><input type="reset" value="Reset" /></li>
+									</ul>
+								</form>
+								<ul class="icons">
+									<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</article>
+
+						<!-- references -->
+							<article id="references">
+								<h2 class="major">References</h2>
+								<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
+								<p>
+									Allen, M. (2023, February 2). How hotels are using robots to reduce costs, improve operations and enhance the guest experience. Hotel Technology News. Retrieved April 9, 2023. <a href="https://hoteltechnologynews.com/2022/09/how-hotels-are-using-robots-to-reduce-costs-improve-operations-and-enhance-the-guest-experience/">Link to article</a><br><br>
+									Calheiros, A. C., Moro, S., & Rita, P. (2017). Sentiment classification of consumer-generated online reviews using topic modeling. Journal of Hospitality Marketing & Management, 26(7), 675–693. <a href="https://doi.org/10.1080/19368623.2017.1310075">Link to journal</a><br><br>
+									Dautenhahn, K., Walters, M., Woods, S., Koay, K. L., Nehaniv, C. L., Sisbot, A., Alami, R., & Siméon, T. (2006). How may I serve you? Proceedings of the 1st ACM SIGCHI/SIGART Conference on Human-Robot Interaction. <a href="https://doi.org/10.1145/1121241.1121272">Link to journal</a><br><br>
+									Ghose, A., Ipeirotis, P. G., & Li, B. (2012). Designing ranking systems for hotels on travel search engines by mining user-generated and crowdsourced content. Marketing Science, 31(3), 493–520. <a href="https://doi.org/10.1287/mksc.1110.0700">Link to journal</a><br><br>
+									Hollander, J. (2023, January 25). Ai in hospitality: The impact of artificial intelligence on the hotel ... Retrieved April 10, 2023. <a href="https://hoteltechreport.com/news/ai-in-hospitality">Link to article</a><br><br>
+									Human–Robot Interaction: Status and challenges - sage journals. (2016). Retrieved April 16, 2023. <a href="https://journals.sagepub.com/doi/10.1177/0018720816644364">Link to journal</a><br><br>
+									IFR International Federation of Robotics. (n.d.). International Federation of Robotics. IFR International Federation of Robotics. Retrieved April 9, 2023. <a href="https://ifr.org/worldrobotics/">Link to journal</a><br><br>
+									Ivanov, Stanislav Hristov and Ivanov, Stanislav Hristov and Webster, Craig, Designing Robot-Friendly Hospitality Facilities (October 13, 2017). Proceedings of the Scientific Conference “Tourism. Innovations. Strategies”, 13-14 October 2017, Bourgas, Bulgaria, pp. 74-81, Available at SSRN: <a href="https://ssrn.com/abstract=3053206">Link to journal</a><br><br>
+									Journal, A. G. T. W. S. (2021, July 14). Robot Hotel loses love for Robots. The Wall Street Journal. Retrieved April 9, 2023. <a href="https://www.wsj.com/articles/robot-hotel-loses-love-for-robots-11547484628">Link to journal</a><br><br>
+									Liu, S. Q., & Mattila, A. S. (2019). Apple pay: Coolness and embarrassment in the service encounter. International Journal of Hospitality Management, 78, 268–275. <a href="https://doi.org/10.1016/j.ijhm.2018.09.009">Link to journal</a><br><br>
+									Lu, L., Cai, R., & Gursoy, D. (2019). Developing and validating a service robot integration willingness scale. International Journal of Hospitality Management, 80, 36–51. <a href="https://doi.org/10.1016/j.ijhm.2019.01.005">Link to journal</a><br><br>
+									Lu, V., Wirtz, J., Kunz, W. H., Paluch, S., Gruber, T., Martins, A., & Patterson, P. (2020). Service Robots, customers, and service employees: What can we learn from the academic literature and where are the gaps? SSRN Electronic Journal. <a href="https://doi.org/10.2139/ssrn.3806199">Link to journal</a><br><br>
+									Lukanova, G., & Ilieva, G. (2019). Robots, Artificial Intelligence, and service automation in hotels. Robots, Artificial Intelligence, and Service Automation in Travel, Tourism and Hospitality, 157–183. <a href="https://doi.org/10.1108/978-1-78756-687-320191009">Link to journal</a><br><br>
+									Luo, J. M., Vu, H. Q., Li, G., & Law, R. (2021). Understanding Service attributes of Robot Hotels: A sentiment analysis of customer online reviews. International Journal of Hospitality Management, 98, 103032. <a href="https://doi.org/10.1016/j.ijhm.2021.103032">Link to journal</a><br><br>
+									López Barbosa, R. R., Sánchez-Alonso, S., & Sicilia-Urban, M. A. (2015). Evaluating hotels rating prediction based on sentiment analysis services. Aslib Journal of Information Management, 67(4), 392–407. <a href="https://doi.org/10.1108/ajim-01-2015-0004">Link to journal</a><br><br>
+									Mori, M. (2020). The uncanny valley. The Monster Theory Reader, 89–94. <a href="https://doi.org/10.5749/j.ctvtv937f.7">Link to journal</a><br><br>
+									O'Leary, D. E. (2011). Blog mining-review and extensions: “from each according to his opinion.” Decision Support Systems, 51(4), 821–830. <a href="https://doi.org/10.1016/j.dss.2011.01.016">Link to journal</a><br><br>
+									Park, E., Kang, J., Choi, D., & Han, J. (2018). Understanding customers' hotel revisiting behaviour: A sentiment analysis of online feedback reviews. Current Issues in Tourism, 23(5), 605–611. <a href="https://doi.org/10.1080/13683500.2018.1549025">Link to journal</a><br><br>
+									Philander, K., & Zhong, Y. Y. (2016). Twitter sentiment analysis: Capturing sentiment from integrated resort tweets. International Journal of Hospitality Management, 55, 16–24. <a href="https://doi.org/10.1016/j.ijhm.2016.02.001">Link to journal</a><br><br>
+									Qiu, H., Li, M., Shu, B., & Bai, B. (2019). Enhancing hospitality experience with Service Robots: The mediating role of Rapport Building. Journal of Hospitality Marketing & Management, 29(3), 247–268. <a href="https://doi.org/10.1080/19368623.2019.1645073">Link to journal</a><br><br>
+									Tan, H., Zhao, Y., Li, S., Wang, W., Zhu, M., Hong, J., & Yuan, X. (2020). Relationship between social robot proactive behavior and the human perception of anthropomorphic attributes. Advanced Robotics, 34(20), 1324–1336. <a href="https://doi.org/10.1080/01691864.2020.1831699">Link to journal</a><br><br>
+									Tussyadiah, I. P., & Park, S. (2017). Consumer Evaluation of Hotel Service Robots. Information and Communication Technologies in Tourism 2018, 308–320. <a href="https://doi.org/10.1007/978-3-319-72923-7_24">Link to journal</a><br><br>
+									Wirtz, J., Kunz, W. H., & Paluch, S. (2021, October 16). The service revolution, Intelligent Automation and Service Robots. The European Business Review. Retrieved April 9, 2023, from <a href="https://www.europeanbusinessreview.com/the-service-revolution-intelligent-automation-and-service-robots/">Link to journal</a><br><br>
+									Wirtz, J., Patterson, P. G., Kunz, W. H., Gruber, T., Lu, V. N., Paluch, S., & Martins, A. (2018). Brave new world: Service robots in the frontline. Journal of Service Management, 29(5), 907–931. <a href="https://doi.org/10.1108/josm-04-2018-0119">Link to journal</a><br><br>
+
+								</p>
+							</article>
+
+
+						<!-- Elements -->
+							<article id="elements">
+								<h2 class="major">Elements</h2>
+
+								<section>
+									<h3 class="major">Text</h3>
+									<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
+									This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
+									This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
+									<hr />
+									<h2>Heading Level 2</h2>
+									<h3>Heading Level 3</h3>
+									<h4>Heading Level 4</h4>
+									<h5>Heading Level 5</h5>
+									<h6>Heading Level 6</h6>
+									<hr />
+									<h4>Blockquote</h4>
+									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
+									<h4>Preformatted</h4>
+									<pre><code>i = 0;
+
+while (!deck.isInOrder()) {
+    print 'Iteration ' + i;
+    deck.shuffle();
+    i++;
+}
+
+print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
+								</section>
+
+								<section>
+									<h3 class="major">Lists</h3>
+
+									<h4>Unordered</h4>
+									<ul>
+										<li>Dolor pulvinar etiam.</li>
+										<li>Sagittis adipiscing.</li>
+										<li>Felis enim feugiat.</li>
+									</ul>
+
+									<h4>Alternate</h4>
+									<ul class="alt">
+										<li>Dolor pulvinar etiam.</li>
+										<li>Sagittis adipiscing.</li>
+										<li>Felis enim feugiat.</li>
+									</ul>
+
+									<h4>Ordered</h4>
+									<ol>
+										<li>Dolor pulvinar etiam.</li>
+										<li>Etiam vel felis viverra.</li>
+										<li>Felis enim feugiat.</li>
+										<li>Dolor pulvinar etiam.</li>
+										<li>Etiam vel felis lorem.</li>
+										<li>Felis enim et feugiat.</li>
+									</ol>
+									<h4>Icons</h4>
+									<ul class="icons">
+										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+										<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+
+									<h4>Actions</h4>
+									<ul class="actions">
+										<li><a href="#" class="button primary">Default</a></li>
+										<li><a href="#" class="button">Default</a></li>
+									</ul>
+									<ul class="actions stacked">
+										<li><a href="#" class="button primary">Default</a></li>
+										<li><a href="#" class="button">Default</a></li>
+									</ul>
+								</section>
+
+								<section>
+									<h3 class="major">Table</h3>
+									<h4>Default</h4>
+									<div class="table-wrapper">
+										<table>
+											<thead>
+												<tr>
+													<th>Name</th>
+													<th>Description</th>
+													<th>Price</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Item One</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Two</td>
+													<td>Vis ac commodo adipiscing arcu aliquet.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Three</td>
+													<td> Morbi faucibus arcu accumsan lorem.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Four</td>
+													<td>Vitae integer tempus condimentum.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Five</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="2"></td>
+													<td>100.00</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+
+									<h4>Alternate</h4>
+									<div class="table-wrapper">
+										<table class="alt">
+											<thead>
+												<tr>
+													<th>Name</th>
+													<th>Description</th>
+													<th>Price</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Item One</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Two</td>
+													<td>Vis ac commodo adipiscing arcu aliquet.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Three</td>
+													<td> Morbi faucibus arcu accumsan lorem.</td>
+													<td>29.99</td>
+												</tr>
+												<tr>
+													<td>Item Four</td>
+													<td>Vitae integer tempus condimentum.</td>
+													<td>19.99</td>
+												</tr>
+												<tr>
+													<td>Item Five</td>
+													<td>Ante turpis integer aliquet porttitor.</td>
+													<td>29.99</td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="2"></td>
+													<td>100.00</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</section>
+
+								<section>
+									<h3 class="major">Buttons</h3>
+									<ul class="actions">
+										<li><a href="#" class="button primary">Primary</a></li>
+										<li><a href="#" class="button">Default</a></li>
+									</ul>
+									<ul class="actions">
+										<li><a href="#" class="button">Default</a></li>
+										<li><a href="#" class="button small">Small</a></li>
+									</ul>
+									<ul class="actions">
+										<li><a href="#" class="button primary icon solid fa-download">Icon</a></li>
+										<li><a href="#" class="button icon solid fa-download">Icon</a></li>
+									</ul>
+									<ul class="actions">
+										<li><span class="button primary disabled">Disabled</span></li>
+										<li><span class="button disabled">Disabled</span></li>
+									</ul>
+								</section>
+
+								<section>
+									<h3 class="major">Form</h3>
+									<form method="post" action="#">
+										<div class="fields">
+											<div class="field half">
+												<label for="demo-name">Name</label>
+												<input type="text" name="demo-name" id="demo-name" value="" placeholder="Jane Doe" />
+											</div>
+											<div class="field half">
+												<label for="demo-email">Email</label>
+												<input type="email" name="demo-email" id="demo-email" value="" placeholder="jane@untitled.tld" />
+											</div>
+											<div class="field">
+												<label for="demo-category">Category</label>
+												<select name="demo-category" id="demo-category">
+													<option value="">-</option>
+													<option value="1">Manufacturing</option>
+													<option value="1">Shipping</option>
+													<option value="1">Administration</option>
+													<option value="1">Human Resources</option>
+												</select>
+											</div>
+											<div class="field half">
+												<input type="radio" id="demo-priority-low" name="demo-priority" checked>
+												<label for="demo-priority-low">Low</label>
+											</div>
+											<div class="field half">
+												<input type="radio" id="demo-priority-high" name="demo-priority">
+												<label for="demo-priority-high">High</label>
+											</div>
+											<div class="field half">
+												<input type="checkbox" id="demo-copy" name="demo-copy">
+												<label for="demo-copy">Email me a copy</label>
+											</div>
+											<div class="field half">
+												<input type="checkbox" id="demo-human" name="demo-human" checked>
+												<label for="demo-human">Not a robot</label>
+											</div>
+											<div class="field">
+												<label for="demo-message">Message</label>
+												<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
+											</div>
+										</div>
+										<ul class="actions">
+											<li><input type="submit" value="Send Message" class="primary" /></li>
+											<li><input type="reset" value="Reset" /></li>
+										</ul>
+									</form>
+								</section>
+
+							</article>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p>A capstone project for the M.S. BDA program at SDSU</p>
+					</footer>
+
+			</div>
+
+		<!-- BG -->
+			<div id="bg"></div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
